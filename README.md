@@ -4,12 +4,12 @@ Training and evaluation for forest cover dataset with 4 diffrent models and simp
 
 # Training and evaluation
 
-To train provided model there is a class in train.py called CoverTypeTrain.
+To train provided model there is a class in utils.py called CoverTypeTrain.
 
 Example:
 
 ```python
-from train import CoverTypeTrain
+from utils import CoverTypeTrain
 
 train = CoverTypeTrain()
 train.load_data()
@@ -19,7 +19,7 @@ train.knn(neighbors=5, path_to_save='./models/knn_model.pkl')
 To evaluate:
 
 ```python
-from train import CoverTypeEvaluate
+from utils import CoverTypeEvaluate
 
 evaluate = CoverTypeEvaluate(X_test=train.X_test,
                              y_test=train.y_test,
@@ -66,6 +66,7 @@ Number of neighbors was set to 3 after analyzing plot below.
 ![alt text](./assets/knn_neighbors.png)
 
 My pure intuition for choosing this model was that it makes sense that trees of the same type would be located near each other in a forest.
+
 Model achieves around 98% accuracy on test set.
 
 
@@ -78,6 +79,7 @@ The number of estimators was set to 120 for best accuracy after analyzing plot b
 ![alt text](./assets/rf_estimators.png)
 
 Model achieves around 99% accuracy on test set.
+
 A forest for a forest makes sense.
 
 
@@ -98,9 +100,9 @@ Model achieves around 91% accuracy on test set.
 
 ## Accuracy
 
-![alt text](./assets/rf_estimators.png)
+![alt text](./assets/accuracies.png)
 
 ## Confusion matrix
 
-![alt text](./assets/rf_estimators.png)
+![alt text](./assets/confusion_matrices.png)
 

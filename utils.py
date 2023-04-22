@@ -340,15 +340,15 @@ class CoverTypeEvaluate:
             'Neural Network': self.metrics(model_name='nn', metric='accuracy'),
             'Heuristic': self.metrics(model_name='heuristic', metric='accuracy')
         }
-        
+
         plt.figure(figsize=(8,6))
-        plt.bar(accuracies.values(), accuracies.keys(), color='blue')
+        plt.bar(accuracies.keys(), accuracies.values(), color='blue')
         plt.title('Accuracy Scores of Different Models')
         plt.xlabel('Model')
         plt.ylabel('Accuracy')
         plt.ylim([0, 1.1])
 
-        for i, v in enumerate(accuracies.keys()):
+        for i, v in enumerate(accuracies.values()):
             plt.text(i, v+0.01, str(round(v,2)), ha='center')
 
         plt.savefig('./assets/accuracies.png', facecolor='white')
@@ -383,4 +383,6 @@ if __name__ == '__main__':
     train.load_data()
     #train.knn(neighbors=3)
     #train.random_forest()
-    train.nn(search=True, plots=True)
+    #train.nn(search=True, plots=True)
+    evaluate = CoverTypeEvaluate(train.X_test, train.y_test)
+    evaluate.plot_confusion_matrices()
