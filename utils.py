@@ -6,7 +6,7 @@ import tensorflow as tf
 import keras_tuner as kt
 import seaborn as sns
 
-from typing import List, Optional
+from typing import List
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestClassifier
@@ -240,7 +240,7 @@ class CoverTypeTrain:
         model.save(path_to_save)
 
     @staticmethod
-    def heuristic(elevation_list: List) -> List:
+    def heuristic(elevation_list: List[int]) -> List[float]:
         '''
         Heuristic model for predicting cover type based on elevation
 
@@ -306,17 +306,14 @@ class CoverTypeEvaluate:
             float: value of metric
 
         '''
-        if model_name == 'knn':
-            y_pred = self.knn.predict(self.X_test)
-        elif model_name == 'rf':
-            y_pred = self.rf.predict(self.X_test)
-        elif model_name == 'nn':
-            y_pred = self.nn.predict(self.X_test)
-            y_pred = np.argmax(y_pred, axis=1)
+        model = getattr(self, model_name)
+
+        if model_name == 'nn':
+            y_pred = np.argmax(model.predict(self.X_test), axis=1)
         elif model_name == 'heuristic':
             y_pred = self.heuristic(self.X_test[:, 0])
         else:
-            raise ValueError('Model name not recognized')
+            y_pred = model.predict(self.X_test)
 
         if metric == 'accuracy':
             return accuracy_score(self.y_test, y_pred)
@@ -384,5 +381,3 @@ if __name__ == '__main__':
     #train.knn(neighbors=3)
     #train.random_forest()
     #train.nn(search=True, plots=True)
-    evaluate = CoverTypeEvaluate(train.X_test, train.y_test)
-    evaluate.plot_confusion_matrices()

@@ -20,6 +20,6 @@ input_data = {
 
 input_data_json = json.dumps(input_data)
 
-response = requests.get(url, params={'model': 'heuristic', 'inputs': input_data_json})
+response = requests.get(url, params={'model': 'nn', 'inputs': input_data_json})
 
 print(response.text)

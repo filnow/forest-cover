@@ -39,6 +39,37 @@ pip install -r requirements.txt
 python3 app.py
 
 ```
+## Example request in python
+
+Data comes from first row of the dataset that is labeled as 5.
+
+```python
+import requests
+import json
+
+url = 'http://localhost:5000/' 
+
+input_data = {
+    'Elevation': 2596,
+    'Aspect': 51,
+    'Slope': 3,
+    'Horizontal_Distance_To_Hydrology': 258,
+    'Vertical_Distance_To_Hydrology': 0,
+    'Horizontal_Distance_To_Roadways': 510,
+    'Hillshade_9am': 221,
+    'Hillshade_Noon': 232,
+    'Hillshade_3pm': 148,
+    'Horizontal_Distance_To_Fire_Points': 6279,
+    'Wilderness_Area': 1,
+    'Soil_Type': 29
+}
+
+input_data_json = json.dumps(input_data)
+
+response = requests.get(url, params={'model': 'knn', 'inputs': input_data_json})
+
+print(response.text)
+```
 
 # Summary of models
 
@@ -89,9 +120,9 @@ Firstly, I found the best hyper-parametrs using keras-tuner library.
 The description of that can be found in /models/hyperparametrs directory.
 Then I trained net for 30 epochs on the training set, plots below show the process
 
-![alt text](./assets/rf_estimators.png)
+![alt text](./assets/accuracy_of_nn.png)
 
-![alt text](./assets/rf_estimators.png)
+![alt text](./assets/loss_of_nn.png)
 
 Model achieves around 91% accuracy on test set.
 

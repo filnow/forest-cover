@@ -58,14 +58,14 @@ def predict():
         prediction = CoverTypeTrain.heuristic([inputs_dict.get('Elevation')])
     elif model_name == 'knn':
         model = load_models[model_name]
-        prediction = model.predict([[value for key, value in inputs_dict.items()]])
+        prediction = model.predict([[*inputs_dict.values()]])
     elif model_name == 'nn':
         model = load_models[model_name]
-        prediction = model.predict([[value for key, value in inputs_dict.items()]])
+        prediction = model.predict([[*inputs_dict.values()]])
         prediction = np.argmax(prediction, axis=1)
     else:
         model = load_models[model_name]
-        prediction = model.predict([[value for key, value in inputs_dict.items()]])
+        prediction = model.predict([[*inputs_dict.values()]])
 
     output = {i: tree_types[i] for i in prediction}
 
