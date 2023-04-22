@@ -39,9 +39,17 @@ pip install -r requirements.txt
 python3 app.py
 
 ```
+## Docker run
+
+```bash
+docker build -t forest-cover .
+docker run -p 5000:5000 forest_cover
+
+```
+
 ## Example request in python
 
-Data comes from first row of the dataset that is labeled as 5.
+Data comes from third row of the dataset that is labeled as 2 - Lodgepole Pine.
 
 ```python
 import requests
@@ -50,26 +58,37 @@ import json
 url = 'http://localhost:5000/' 
 
 input_data = {
-    'Elevation': 2596,
-    'Aspect': 51,
-    'Slope': 3,
-    'Horizontal_Distance_To_Hydrology': 258,
-    'Vertical_Distance_To_Hydrology': 0,
-    'Horizontal_Distance_To_Roadways': 510,
-    'Hillshade_9am': 221,
-    'Hillshade_Noon': 232,
-    'Hillshade_3pm': 148,
-    'Horizontal_Distance_To_Fire_Points': 6279,
-    'Wilderness_Area': 1,
-    'Soil_Type': 29
+    'Elevation': [2785],
+    'Aspect': [155],
+    'Slope': [18],
+    'Horizontal_Distance_To_Hydrology': [242],
+    'Vertical_Distance_To_Hydrology': [118],
+    'Horizontal_Distance_To_Roadways': [3090],
+    'Hillshade_9am': [238],
+    'Hillshade_Noon': [238],
+    'Hillshade_3pm': [122],
+    'Horizontal_Distance_To_Fire_Points': [6211],
+    'Wilderness_Area': [1],
+    'Soil_Type': [30]
 }
 
 input_data_json = json.dumps(input_data)
 
-response = requests.get(url, params={'model': 'knn', 'inputs': input_data_json})
+response = requests.get(url, params={'model': 'heuristic', 'inputs': input_data_json})
 
 print(response.text)
 ```
+For multiple inputs just add values to arrays.
+
+## Supported models names
+
+* nn - Neural Network
+
+* knn - K-Nearest Neighbors 
+
+* rf - Random Forest
+
+* heuristic - Heuristic based on elevation
 
 # Summary of models
 
@@ -98,18 +117,18 @@ Number of neighbors was set to 3 after analyzing plot below.
 
 My pure intuition for choosing this model was that it makes sense that trees of the same type would be located near each other in a forest.
 
-Model achieves around 98% accuracy on test set.
+Model achieves around 97% accuracy on test set.
 
 
 ## Random Forest (RF) 
 
-The best performing model, all arguments expect estimators are set to default.
+All arguments for this algorithm expect estimators are set to default.
 Standardization is done with StandardScaler.
 The number of estimators was set to 120 for best accuracy after analyzing plot below although 50 would be probably better for speed.
 
 ![alt text](./assets/rf_estimators.png)
 
-Model achieves around 99% accuracy on test set.
+Model achieves around 96% accuracy on test set.
 
 A forest for a forest makes sense.
 

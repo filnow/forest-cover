@@ -221,20 +221,22 @@ class CoverTypeTrain:
         model.fit(self.X_train, y_train_one_hot, epochs=epochs, validation_data=(self.X_val, y_val_one_hot))
 
         if plots:
+            plt.figure()
             plt.plot(model.history.history['accuracy'])
             plt.plot(model.history.history['val_accuracy'])
-            plt.title('model accuracy')
-            plt.ylabel('accuracy')
-            plt.xlabel('epoch')
-            plt.legend(['train', 'test'], loc='upper left')
+            plt.title('Model accuracy')
+            plt.ylabel('Accuracy')
+            plt.xlabel('Epoch')
+            plt.legend(['train', 'val'], loc='upper left')
             plt.savefig('./assets/accuracy_of_nn.png', facecolor='white')
 
+            plt.figure()
             plt.plot(model.history.history['loss'])
             plt.plot(model.history.history['val_loss'])
-            plt.title('model loss')
-            plt.ylabel('loss')
-            plt.xlabel('epoch')
-            plt.legend(['train', 'test'], loc='upper left')
+            plt.title('Model loss')
+            plt.ylabel('Loss')
+            plt.xlabel('Epoch')
+            plt.legend(['train', 'val'], loc='upper left')
             plt.savefig('./assets/loss_of_nn.png', facecolor='white')
 
         model.save(path_to_save)
@@ -373,11 +375,3 @@ class CoverTypeEvaluate:
             ax.set_ylabel('Actual')
         
         plt.savefig('./assets/confusion_matrices.png', facecolor='white')
-    
-
-if __name__ == '__main__':
-    train = CoverTypeTrain()
-    train.load_data()
-    #train.knn(neighbors=3)
-    #train.random_forest()
-    #train.nn(search=True, plots=True)

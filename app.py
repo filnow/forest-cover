@@ -49,23 +49,27 @@ def predict():
         for key in required_keys:
             if key not in inputs_dict:
                 return jsonify(f"Missing required key: {key}")
-            if not isinstance(inputs_dict[key], (float, int)):
-                return jsonify(f"{key} must be a numeric value")
+            for i in inputs_dict[key]:
+                if not isinstance(i, (float, int)):
+                    return jsonify(f"{key} must be a numeric value")
     except json.JSONDecodeError:
         return jsonify('Invalid input data')
 
+    #NOTE: need to transpose the input data to match the model's input shape
+    input = np.array([*inputs_dict.values()]).transpose()
+
     if model_name == 'heuristic':
-        prediction = CoverTypeTrain.heuristic([inputs_dict.get('Elevation')])
+        prediction = CoverTypeTrain.heuristic(np.array(inputs_dict.get('Elevation')))
     elif model_name == 'knn':
         model = load_models[model_name]
-        prediction = model.predict([[*inputs_dict.values()]])
+        prediction = model.predict(input)
     elif model_name == 'nn':
         model = load_models[model_name]
-        prediction = model.predict([[*inputs_dict.values()]])
+        prediction = model.predict(input)
         prediction = np.argmax(prediction, axis=1)
     else:
         model = load_models[model_name]
-        prediction = model.predict([[*inputs_dict.values()]])
+        prediction = model.predict(input)
 
     output = {i: tree_types[i] for i in prediction}
 
@@ -73,4 +77,4 @@ def predict():
         
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
