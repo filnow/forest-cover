@@ -43,7 +43,7 @@ python3 app.py
 
 ```bash
 docker build -t forest-cover .
-docker run -p 5000:5000 forest_cover
+docker run -p 5000:5000 forest-cover
 
 ```
 
