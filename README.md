@@ -156,3 +156,9 @@ Model achieves around 91% accuracy on test set.
 
 ![alt text](./assets/confusion_matrices.png)
 
+
+# Additional infomations
+
+Model rl.pkl is random forest model trained on 10 estimators beacause of github big files limitations
+
+You can easily train another model with 120 estimators on your own using CoverTypeTrain.
